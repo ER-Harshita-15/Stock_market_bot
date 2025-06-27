@@ -143,8 +143,10 @@ else:
                     st.session_state.symbol = stock
                     st.rerun()
 
-# Initialize session states
+# Initialize session states only if not set
 if 'selected_query' not in st.session_state:
     st.session_state.selected_query = ""
-if 'symbol' not in st.session_state:
-    st.session_state.symbol = ""
+
+# Do NOT overwrite symbol if user has typed something
+if 'symbol' not in st.session_state and symbol:
+    st.session_state.symbol = symbol

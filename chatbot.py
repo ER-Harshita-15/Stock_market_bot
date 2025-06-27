@@ -8,8 +8,8 @@ GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
 headers = {
-        "Authorization": f"Bearer {GROQ_API_KEY}",
-        "Content-Type": "application/json"
+    "Authorization": f"Bearer {GROQ_API_KEY}",
+    "Content-Type": "application/json"
 }
 
 def query_groq(messages, model="llama3-70b-8192"):
