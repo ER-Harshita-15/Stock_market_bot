@@ -1,7 +1,13 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import streamlit as st
-from charts import show_chart
-from news import get_latest_news
-from chatbot import get_bot_response
+from Graphs.charts import show_chart
+from News_Scrapper.news import get_latest_news
+from Chat_bot.chatbot import get_bot_response
+from dotenv import load_dotenv
+load_dotenv()
 
 # Page configuration
 st.set_page_config(

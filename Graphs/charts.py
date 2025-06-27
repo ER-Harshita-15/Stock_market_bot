@@ -6,7 +6,7 @@ sns.set_style("whitegrid")
 
 import pandas as pd
 import numpy as np
-from chatbot import get_bot_response
+from Chat_bot.chatbot import get_bot_response
 
 def calculate_macd(data, fast=12, slow=26, signal=9):
     exp1 = data['Close'].ewm(span=fast, adjust=False).mean()

@@ -1,24 +1,30 @@
 import requests
-from bs4 import BeautifulSoup
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 def get_latest_news(query):
+    api_key = os.environ.get("NEWSAPI_KEY")  # Store your API key in an environment variable
+    if not api_key:
+        return ["News API key not found. Please set NEWSAPI_KEY in your environment."]
+    url = (
+        f"https://newsapi.org/v2/everything?"
+        f"q={query}&"
+        f"sortBy=publishedAt&"
+        f"language=en&"
+        f"apiKey={api_key}"
+    )
     try:
-        # Build Google News URL for search
-        url = f"https://www.google.com/search?q={query}+stock+news&hl=en&tbm=nws"
-        headers = {
-            "User-Agent": "Mozilla/5.0"
-        }
-
-        response = requests.get(url, headers=headers)
-        soup = BeautifulSoup(response.text, "html.parser")
-
-        # Extract news headlines
-        headlines = [h.text for h in soup.select("div.BNeawe.vvjwJb.AP7Wnd")][:5]
-
-        if not headlines:
+        response = requests.get(url)
+        data = response.json()
+        print(data)
+        if "articles" in data and data["articles"]:
+            return [f"{article['title']} ({article['source']['name']})" for article in data["articles"][:5]]
+        elif "message" in data:
+            return [f"News API error: {data['message']}"]
+        else:
             return ["No recent news found."]
-        
-        return headlines
-
     except Exception as e:
         return [f"Error fetching news: {e}"]
+    
+get_latest_news("Manali Petrochemicals")
