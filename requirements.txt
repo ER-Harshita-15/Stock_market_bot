@@ -1,0 +1,7 @@
+streamlit 
+yfinance
+matplotlib
+beautiifulsoup4
+requests
+seaborn
+pandas
