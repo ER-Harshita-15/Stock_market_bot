@@ -2,3 +2,6 @@
 ai_news_venv/           
 
 .venv/
+__pycache__/
+*.pyc
+
