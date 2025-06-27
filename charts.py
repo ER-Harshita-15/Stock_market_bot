@@ -28,18 +28,18 @@ def generate_signals(data):
     sell = []
     flag = -1
     for i in range(len(data)):
-        if data['MACD'][i] > data['Signal'][i] and data['RSI'][i] < 70:
+        if data['MACD'].iloc[i] > data['Signal'].iloc[i] and data['RSI'].iloc[i] < 70:
             if flag != 1:
-                buy.append(data['Close'][i])
+                buy.append(data['Close'].iloc[i])
                 sell.append(np.nan)
                 flag = 1
             else:
                 buy.append(np.nan)
                 sell.append(np.nan)
-        elif data['MACD'][i] < data['Signal'][i] and data['RSI'][i] > 30:
+        elif data['MACD'].iloc[i] < data['Signal'].iloc[i] and data['RSI'].iloc[i] > 30:
             if flag != 0:
                 buy.append(np.nan)
-                sell.append(data['Close'][i])
+                sell.append(data['Close'].iloc[i])
                 flag = 0
             else:
                 buy.append(np.nan)

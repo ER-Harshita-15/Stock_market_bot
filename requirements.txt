@@ -5,3 +5,4 @@ beautiifulsoup4
 requests
 seaborn
 pandas
+python-dotenv
