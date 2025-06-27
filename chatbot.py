@@ -17,7 +17,7 @@ def query_groq(messages, model="llama3-70b-8192"):
         payload = {
             "model": model,
             "messages": messages,
-            "max_tokens": 350,
+            "max_tokens": 2000,
             "temperature": 0.7
         }
         response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=30)
