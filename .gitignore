@@ -1,2 +1,4 @@
 .env
 ai_news_venv/           
+
+.venv/
