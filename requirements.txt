@@ -1,8 +1,9 @@
 streamlit 
 yfinance
 matplotlib
-beautiifulsoup4
+beautifulsoup4
 requests
 seaborn
 pandas
 python-dotenv
+numpy

@@ -61,13 +61,62 @@ if symbol:
             try:
                 news_items = get_latest_news(symbol.strip())
                 if news_items:
-                    for i, headline in enumerate(news_items[:4]):
-                        st.write(f"📄 **News {i+1}:** {headline}")
-                        st.divider()
+                    for i, news_item in enumerate(news_items[:4]):
+                        # Check if it's the new enhanced format (dict) or legacy format (string)
+                        if isinstance(news_item, dict):
+                            # New enhanced format with structured data
+                            st.markdown(f"**{news_item['title']}**")
+                            st.caption(f"*Source: {news_item['source']} ({news_item['api']})*")
+                            
+                            if news_item['summary']:
+                                st.write(news_item['summary'])
+                            
+                            # Add clickable link if URL is available
+                            if news_item.get('url') and news_item['url'].startswith('http'):
+                                st.markdown(f"🔗 [Read Full Article]({news_item['url']})")
+                            else:
+                                st.caption("🔗 Full article link not available")
+                                
+                        else:
+                            # Legacy format - simple text (for backward compatibility)
+                            if isinstance(news_item, str):
+                                # Check if it contains the old formatted structure
+                                if "📰 **" in news_item and "*Source:" in news_item:
+                                    st.markdown(news_item)
+                                    st.caption("🔗 Full article link not available")
+                                else:
+                                    st.write(f"📄 **News {i+1}:** {news_item}")
+                        
+                        if i < len(news_items) - 1:  # Don't add divider after last item
+                            st.divider()
                 else:
                     st.info("📭 No recent news found")
+                    
             except Exception as e:
                 st.error(f"Error fetching news: {str(e)}")
+                st.info("💡 This might be due to API limits or network issues. Try again in a moment.")
+        
+        # Add refresh button
+        if st.button("🔄 Refresh News", key="refresh_news", help="Get the latest news updates"):
+            st.rerun()
+        
+        # Show configured APIs status
+        st.caption("📡 **News Sources:** Finnhub, NewsAPI, Alpha Vantage with fallback")
+
+        # Debugging info (you can remove this section after everything works properly)
+        with st.expander("🔧 Debug Info", expanded=False):
+            st.write("**Environment Variables Status:**")
+            apis_status = {
+                "FINNHUB_API_KEY": "✅ Set" if os.environ.get("FINNHUB_API_KEY") else "❌ Not Set",
+                "NEWSAPI_KEY": "✅ Set" if os.environ.get("NEWSAPI_KEY") else "❌ Not Set", 
+                "ALPHA_VANTAGE_API_KEY": "✅ Set" if os.environ.get("ALPHA_VANTAGE_API_KEY") else "❌ Not Set"
+            }
+            for api, status in apis_status.items():
+                st.write(f"- {api}: {status}")
+            
+            if news_items and len(news_items) > 0:
+                st.write("**Last News Item Structure:**")
+                st.json(news_items[0] if isinstance(news_items[0], dict) else {"legacy_format": str(news_items[0])[:100]})
     
     st.divider()
     
@@ -131,7 +180,7 @@ else:
         
         with col_f2:
             st.write("📰 **Latest News**")
-            st.caption("Up-to-date market news and updates")
+            st.caption("Up-to-date market news with clickable links")
         
         with col_f3:
             st.write("🤖 **AI Analysis**")
@@ -148,6 +197,17 @@ else:
                 if st.button(stock, key=f"pop_{stock}", use_container_width=True):
                     st.session_state.symbol = stock.strip()
                     st.rerun()
+
+        # API Setup Instructions
+        st.write("### 🔧 Setup Instructions:")
+        st.info("""
+        **To get real news (instead of fallback links):**
+        1. Get a free API key from [Finnhub](https://finnhub.io/) (recommended - 60 calls/minute)
+        2. Add `FINNHUB_API_KEY=your_key` to your `.env` file
+        3. Restart the app to see real financial news with clickable links
+        
+        **Optional:** You can also add NewsAPI or Alpha Vantage keys for more coverage.
+        """)
 
 # Initialize session states only if not set
 if 'selected_query' not in st.session_state:
