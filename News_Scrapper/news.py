@@ -305,3 +305,4 @@ def get_latest_news(query):
 def get_latest_news_legacy(query):
     """Legacy function for backward compatibility"""
     return get_latest_news(query)
+
