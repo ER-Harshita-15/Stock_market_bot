@@ -2,6 +2,7 @@ import os
 import requests
 import streamlit as st
 from dotenv import load_dotenv
+import re
 load_dotenv()
 
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
