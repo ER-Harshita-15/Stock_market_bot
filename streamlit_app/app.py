@@ -5,7 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import streamlit as st
 from Graphs.charts import show_chart
 from News_Scrapper.news import get_latest_news
-from Chat_bot.chatbot import get_bot_response
+from Chat_bot.chatbot import get_bot_response, generate_ai_insights, display_enhanced_response, display_metrics_in_columns
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -120,41 +120,111 @@ if symbol:
     
     st.divider()
     
-    # AI Assistant section
-    st.subheader("🤖 AI Assistant")
+    # Technical Indicators Section (New Enhanced Section)
+    with st.expander("📊 Technical Indicators Analysis", expanded=False):
+        st.subheader("🔍 Quick Technical Overview")
+        
+        # Example technical indicators - replace with your actual calculations
+        # You can integrate with your charts.py or create separate functions
+        col_tech1, col_tech2, col_tech3 = st.columns(3)
+        
+        with col_tech1:
+            if st.button("📈 RSI Analysis", use_container_width=True):
+                st.session_state.tech_query = f"What is the RSI analysis for {symbol}?"
+        
+        with col_tech2:
+            if st.button("📊 MACD Signal", use_container_width=True):
+                st.session_state.tech_query = f"Explain MACD signals for {symbol}"
+        
+        with col_tech3:
+            if st.button("📉 Moving Averages", use_container_width=True):
+                st.session_state.tech_query = f"Analyze moving averages for {symbol}"
+        
+        # Sample technical indicators display (replace with real data)
+        if st.checkbox("Show Sample Technical Indicators"):
+            # These should be replaced with real calculations from your data
+            sample_rsi = 65.5
+            sample_macd = "Bullish Crossover"
+            sample_sma = "Above 50-day SMA"
+            
+            # Generate insights for the technical indicators
+            with st.spinner("🤖 Generating technical insights..."):
+                try:
+                    insights = generate_ai_insights(sample_rsi, sample_macd, sample_sma)
+                    display_metrics_in_columns(sample_rsi, sample_macd, sample_sma, insights)
+                except Exception as e:
+                    st.error(f"Error generating technical insights: {str(e)}")
+    
+    st.divider()
+    
+    # AI Assistant section (Enhanced)
+    st.subheader("🤖 AI Stock Market Analyst")
+    st.caption("Get professional market analysis without investment recommendations")
     
     # Quick questions
-    st.write("**💡 Quick Questions:**")
-    col_q1, col_q2, col_q3 = st.columns(3)
+    st.write("**💡 Quick Analysis Questions:**")
+    col_q1, col_q2, col_q3, col_q4 = st.columns(4)
     
     with col_q1:
-        if st.button("📊 Current Trend", use_container_width=True):
-            st.session_state.selected_query = f"What's the current trend for {symbol}?"
+        if st.button("📊 Market Sentiment", use_container_width=True):
+            st.session_state.selected_query = f"What's the current market sentiment for {symbol}?"
     
     with col_q2:
-        if st.button("💰 Buy/Sell Signal", use_container_width=True):
-            st.session_state.selected_query = f"Should I buy or sell {symbol}?"
+        if st.button("📈 Technical Analysis", use_container_width=True):
+            st.session_state.selected_query = f"Provide technical analysis for {symbol}"
     
     with col_q3:
-        if st.button("⚠️ Risk Analysis", use_container_width=True):
-            st.session_state.selected_query = f"What are the risks of investing in {symbol}?"
+        if st.button("💼 Fundamental Analysis", use_container_width=True):
+            st.session_state.selected_query = f"What are the fundamental metrics for {symbol}?"
+    
+    with col_q4:
+        if st.button("⚠️ Risk Factors", use_container_width=True):
+            st.session_state.selected_query = f"What are the key risk factors for {symbol}?"
+    
+    # Handle technical query if set
+    if st.session_state.get('tech_query'):
+        st.session_state.selected_query = st.session_state.tech_query
+        del st.session_state.tech_query
     
     # Query input
     default_query = st.session_state.get('selected_query', '')
     query = st.text_area(
-        "💬 Ask about this stock:",
+        "💬 Ask for detailed stock analysis:",
         value=default_query,
-        placeholder="e.g., What's the price target? Is it a good long-term investment?",
+        placeholder="e.g., Analyze the financial health of this company, What are the key technical indicators showing?",
         height=80
     )
     
-    if st.button("🚀 Get AI Analysis", type="primary"):
+    # Analysis type selector
+    analysis_type = st.selectbox(
+        "🎯 Select Analysis Focus:",
+        ["Comprehensive Analysis", "Technical Analysis Only", "Fundamental Analysis Only", "Market Sentiment Only"],
+        help="Choose the type of analysis you want"
+    )
+    
+    if st.button("🚀 Get Professional Analysis", type="primary"):
         if query:
-            with st.spinner("🤖 AI is analyzing..."):
+            # Modify query based on analysis type
+            if analysis_type == "Technical Analysis Only":
+                enhanced_query = f"Focus only on technical analysis: {query}"
+            elif analysis_type == "Fundamental Analysis Only":
+                enhanced_query = f"Focus only on fundamental analysis: {query}"
+            elif analysis_type == "Market Sentiment Only":
+                enhanced_query = f"Focus only on market sentiment and expert opinions: {query}"
+            else:
+                enhanced_query = query
+            
+            with st.spinner("🤖 AI Analyst is preparing comprehensive analysis..."):
                 try:
-                    response = get_bot_response(query, symbol.strip())
-                    st.success("🎯 **AI Response:**")
-                    st.write(response)
+                    response = get_bot_response(enhanced_query, symbol.strip())
+                    
+                    # Enhanced display with proper formatting
+                    st.success("🎯 **Professional Market Analysis:**")
+                    display_enhanced_response(response)  # ✅ NEW: Enhanced display instead of st.write()
+                    
+                    # Add analysis metadata
+                    st.divider()
+                    st.caption(f"📅 Analysis generated on {st.session_state.get('analysis_time', 'now')} | 📊 Stock: {symbol.upper()} | 🎯 Focus: {analysis_type}")
                     
                     # Clear selected query after response
                     if 'selected_query' in st.session_state:
@@ -165,14 +235,19 @@ if symbol:
                     st.info("💡 Try rephrasing your question or check connection")
         else:
             st.warning("Please enter a question first!")
+    
+    # Additional Analysis Tools
+    with st.expander("🔧 Advanced Analysis Tools", expanded=False):
+        st.write("**Coming Soon:**")
+        st.info("• Portfolio analysis • Sector comparison • Historical performance • Risk assessment")
 
 else:
-    # Welcome section
-    st.info("👆 **Get Started:** Enter a stock symbol above to begin analysis")
+    # Welcome section (Enhanced)
+    st.info("👆 **Get Started:** Enter a stock symbol above to begin professional analysis")
     
     with st.container():
-        st.write("### 🌟 Features:")
-        col_f1, col_f2, col_f3 = st.columns(3)
+        st.write("### 🌟 Enhanced Features:")
+        col_f1, col_f2, col_f3, col_f4 = st.columns(4)
         
         with col_f1:
             st.write("📊 **Real-time Charts**")
@@ -184,7 +259,11 @@ else:
         
         with col_f3:
             st.write("🤖 **AI Analysis**")
-            st.caption("Intelligent insights and recommendations")
+            st.caption("Professional insights without investment advice")
+        
+        with col_f4:
+            st.write("📈 **Technical Tools**")
+            st.caption("RSI, MACD, Moving Averages analysis")
         
         st.divider()
         
@@ -208,10 +287,38 @@ else:
         
         **Optional:** You can also add NewsAPI or Alpha Vantage keys for more coverage.
         """)
+        
+        # Sample Analysis Preview
+        with st.expander("🎯 See Sample Analysis Format", expanded=False):
+            st.write("**Professional Analysis Structure:**")
+            st.markdown("""
+            ### 📊 MARKET SENTIMENT & OVERVIEW
+            - Current market perception and expert consensus
+            - Recent news impact and sector performance
+            
+            ### 📈 TECHNICAL ANALYSIS
+            - Key technical indicators and chart patterns
+            - Support/resistance levels and momentum
+            
+            ### 💼 FUNDAMENTAL ANALYSIS
+            - Financial metrics and earnings performance
+            - Industry comparison and competitive position
+            
+            ### 🎯 KEY INSIGHTS
+            - Most significant factors and potential catalysts
+            """)
 
-# Initialize session states only if not set
+# Initialize session states
 if 'selected_query' not in st.session_state:
     st.session_state.selected_query = ""
+
+if 'tech_query' not in st.session_state:
+    st.session_state.tech_query = ""
+
+# Store analysis time
+import datetime
+if 'analysis_time' not in st.session_state:
+    st.session_state.analysis_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
 # Do NOT overwrite symbol if user has typed something
 if 'symbol' not in st.session_state and symbol:
