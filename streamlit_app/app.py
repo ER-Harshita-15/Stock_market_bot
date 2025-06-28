@@ -28,16 +28,16 @@ with col_input:
         "🔍 Enter Stock Symbol:",
         placeholder="e.g., INFY.NS, TCS.NS, RELIANCE.NS",
         help="Enter NSE/BSE stock symbols or popular indices"
-    )
+    ).strip()
 
 with col_example:
     if st.button("📊 Try INFY.NS", type="secondary"):
-        st.session_state.symbol = "INFY.NS"
+        st.session_state.symbol = "INFY.NS".strip()
         st.rerun()
 
 # Use session state for symbol
 if "symbol" in st.session_state:
-    symbol = st.session_state.symbol
+    symbol = st.session_state.symbol.strip()
 
 if symbol:
     # Display current analysis
@@ -50,7 +50,7 @@ if symbol:
         st.subheader("📈 Price Chart")
         with st.spinner("Loading chart..."):
             try:
-                show_chart(symbol)
+                show_chart(symbol.strip())
             except Exception as e:
                 st.error(f"Error loading chart: {str(e)}")
                 st.info("💡 Try checking the stock symbol or try again later")
@@ -59,7 +59,7 @@ if symbol:
         st.subheader("📰 Latest News")
         with st.spinner("Fetching news..."):
             try:
-                news_items = get_latest_news(symbol)
+                news_items = get_latest_news(symbol.strip())
                 if news_items:
                     for i, headline in enumerate(news_items[:4]):
                         st.write(f"📄 **News {i+1}:** {headline}")
@@ -103,7 +103,7 @@ if symbol:
         if query:
             with st.spinner("🤖 AI is analyzing..."):
                 try:
-                    response = get_bot_response(query, symbol)
+                    response = get_bot_response(query, symbol.strip())
                     st.success("🎯 **AI Response:**")
                     st.write(response)
                     
@@ -146,7 +146,7 @@ else:
         for i, stock in enumerate(popular_stocks):
             with popular_cols[i]:
                 if st.button(stock, key=f"pop_{stock}", use_container_width=True):
-                    st.session_state.symbol = stock
+                    st.session_state.symbol = stock.strip()
                     st.rerun()
 
 # Initialize session states only if not set
@@ -155,4 +155,4 @@ if 'selected_query' not in st.session_state:
 
 # Do NOT overwrite symbol if user has typed something
 if 'symbol' not in st.session_state and symbol:
-    st.session_state.symbol = symbol
+    st.session_state.symbol = symbol.strip()
