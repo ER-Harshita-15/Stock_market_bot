@@ -220,10 +220,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-**Developer**: [Your Name]
-- 📧 Email: your.email@example.com
-- 🐦 Twitter: [@yourusername](https://twitter.com/yourusername)
-- 💼 LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourusername)
+**Developer**: HARHSITA PANDE
+- 📧 Email: 2004pandeharshita@gmail.com
+- 🐦 My portfolio Website: [Portfolio Website](https://er-harshita-15.github.io/)
+- 💼 LinkedIn: [My LinkedIn]([https://linkedin.com/in/yourusername](https://www.linkedin.com/in/harshita-pande-049538253/))
 
 ---
 
