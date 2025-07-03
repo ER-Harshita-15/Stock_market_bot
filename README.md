@@ -223,7 +223,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Developer**: HARHSITA PANDE
 - 📧 Email: 2004pandeharshita@gmail.com
 - 🐦 My portfolio Website: [Portfolio Website](https://er-harshita-15.github.io/)
-- 💼 LinkedIn: [My LinkedIn]([https://linkedin.com/in/yourusername](https://www.linkedin.com/in/harshita-pande-049538253/))
+- 💼 LinkedIn: [My LinkedIn](https://www.linkedin.com/in/harshita-pande-049538253/)
 
 ---
 
