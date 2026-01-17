@@ -10,6 +10,11 @@ An advanced stock market analysis platform that combines real-time data visualiz
 
 **Try it now:** [Stock Market Bot Live App](https://stockmarketbot-wus6mtpbsysibc5qbrtdsk.streamlit.app/)
 
+## 🎥 Project Demo
+
+[![Watch Demo](https://img.youtube.com/vi/B3RbC21Tumg/0.jpg)](https://www.youtube.com/watch?v=B3RbC21Tumg)
+
+
 ## ✨ Key Features
 
 ### 📊 **Real-Time Technical Analysis**
