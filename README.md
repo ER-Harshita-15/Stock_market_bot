@@ -1,6 +1,6 @@
 # 📈 Stock Market Bot
 
-> **🚀 Your intelligent companion for professional stock market analysis**
+**🚀 Your intelligent companion for professional stock market analysis**
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://stockmarketbot-wus6mtpbsysibc5qbrtdsk.streamlit.app/)
 
