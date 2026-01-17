@@ -13,12 +13,12 @@ headers = {
     "Content-Type": "application/json"
 }
 
-def query_groq(messages, model="llama3-70b-8192"):
+def query_groq(messages, model="llama-3.3-70b-versatile"):
     try:
         payload = {
             "model": model,
             "messages": messages,
-            "max_tokens": 3000,
+            "max_tokens": 1000,
             "temperature": 0.3,
             "top_p": 0.9,
         }
@@ -181,7 +181,7 @@ def generate_ai_insights(rsi, macd_signal, sma_signal):
         {"role": "system", "content": "You are a financial assistant."},
         {"role": "user", "content": prompt}
     ]
-    result = query_groq(messages, model="llama3-70b-8192")
+    result = query_groq(messages, model="llama-3.3-70b-versatile")
     if "error" in result:
         return f"Error: {result['error']}"
     try:
